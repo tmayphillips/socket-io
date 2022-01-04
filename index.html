@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--CSS Styles -->
+    <!-- <link rel="stylesheet" href="assets/css/styles.css" /> -->
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="" />
+    <link rel="icon" type="image/png" sizes="32x32" href="" />
+
+    <!-- CSS CDN -->
+    <link rel="stylesheet" href="" />
+    <title>TITLE</title>
+  </head>
+
+  <body>
+
+    <ul id='messages'></ul>
+    <form action='' id='form'>
+      <input type='text' id='input'>
+      <button type='submit'>Send</button>
+    </form>
+    
+    <!-- Website scripts -->
+    <script src='/socket.io/socket.io.js'></script>
+    <script>
+      const socket = io();
+
+      let messages = document.querySelector('messages');
+      let form = document.querySelector('#form')
+      let input = document.querySelector('#input')
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if(input.value) {
+          socket.emit('chat message', input.value);
+          input.value = ''
+        }
+      })
+
+      socket.on('chat message', function(msg) {
+        let chatMessage = document.createElement('li');
+        chatMessage.innerText = msg;
+        messages.appendChild(chatMessage)
+      })
+    </script>
+    <script src="index.js"></script>
+  </body>
+</html>
